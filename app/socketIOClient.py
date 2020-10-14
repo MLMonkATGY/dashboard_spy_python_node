@@ -18,6 +18,11 @@ def keep_alive(data):
     socketIO.emit("gateway_status", "alive")
 
 
+def debug(data):
+    print(data)
+    socketIO.emit("debug_receive", data)
+
+
 def decrypt(data_element, iv, api_key):
 
     api_key = bytes(api_key, "utf-8")
@@ -40,5 +45,6 @@ socketIO = SocketIO('http://localhost:7878', verify=True,
 
 socketIO.on('decrypt', decryption)
 socketIO.on('alive', keep_alive)
+socketIO.on('debug', debug)
 
 socketIO.wait()
