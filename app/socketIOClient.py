@@ -11,7 +11,10 @@ def decryption(data):
     # payloadSlice = data.split("*")
     decrypted = str(
         decrypt(data["data1"], data["iv"], data["apiKey"]), "utf8")
-    socketIO.emit("status_update", decrypted)
+    socketIO.emit("generic_event", {
+        "event": "decryption_done",
+        "payload": decrypted
+    })
     print(decrypted)
 
 
