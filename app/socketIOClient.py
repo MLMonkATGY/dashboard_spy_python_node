@@ -7,11 +7,12 @@ from Crypto.Random import get_random_bytes
 
 
 def decryption(data):
-    print('welcome received', data)
-    payloadSlice = data.split("*")
+    # print('welcome received', data)
+    # payloadSlice = data.split("*")
     decrypted = str(
-        decrypt(payloadSlice[2], payloadSlice[1], payloadSlice[0]), "utf8")
+        decrypt(data["data1"], data["iv"], data["apiKey"]), "utf8")
     socketIO.emit("status_update", decrypted)
+    print(decrypted)
 
 
 def keep_alive(data):
