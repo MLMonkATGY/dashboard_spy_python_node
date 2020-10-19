@@ -15,7 +15,7 @@ def decryption(data):
 
 
 def keep_alive(data):
-    socketIO.emit("gateway_status", "alive")
+    socketIO.emit("generic_event", alive_payload)
 
 
 def debug(data):
@@ -42,9 +42,13 @@ def decrypt(data_element, iv, api_key):
 
 socketIO = SocketIO('http://localhost:7878', verify=True,
                     wait_for_connection=True)
-
+alive_payload = {"event": "gateway_status", "payload": {
+    "client": "asdfas",
+    "status": "alive",
+    "broadcastFunction": "decrypt"
+}
+}
 socketIO.on('decrypt', decryption)
 socketIO.on('alive', keep_alive)
 socketIO.on('debug', debug)
-
 socketIO.wait()
