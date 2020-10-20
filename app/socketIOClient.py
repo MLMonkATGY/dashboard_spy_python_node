@@ -6,16 +6,25 @@ from base64 import b64decode, b64encode
 from Crypto.Random import get_random_bytes
 
 
-def decryption(data):
+def decryption(payload):
     # print('welcome received', data)
     # payloadSlice = data.split("*")
-    decrypted = str(
-        decrypt(data["data1"], data["iv"], data["apiKey"]), "utf8")
+    resp = []
+    try:
+        for data in payload:
+            decrypted = str(
+                decrypt(data["data1"], data["iv"], data["apiKey"]), "utf8")
+
+            print(decrypted)
+            resp.append(decrypted)
+    except Exception:
+        decrypted = {"error": "decryption error"}
+        resp.append(decrypted)
+
     socketIO.emit("generic_event", {
         "event": "decryption_done",
-        "payload": decrypted
+        "payload": resp
     })
-    print(decrypted)
 
 
 def keep_alive(data):
