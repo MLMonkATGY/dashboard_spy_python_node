@@ -4,6 +4,7 @@ from Crypto.Cipher import AES
 from Crypto.Util.Padding import unpad, pad
 from base64 import b64decode, b64encode
 from Crypto.Random import get_random_bytes
+import json
 
 
 def decryption(payload):
@@ -14,9 +15,11 @@ def decryption(payload):
         for data in payload:
             decrypted = str(
                 decrypt(data["data1"], data["iv"], data["apiKey"]), "utf8")
-
-            print(decrypted)
-            resp.append(decrypted)
+            jsonPayload = json.loads(decrypted)
+            jsonPayload["deviceId"] = data['deviceId']
+            jsonPayload["localAddress"] = data['localAddress']
+            print(jsonPayload)
+            resp.append(jsonPayload)
     except Exception:
         decrypted = {"error": "decryption error"}
         resp.append(decrypted)
